@@ -20,7 +20,7 @@ jobs:
           submodules: true
           lfs: false
 
-      # 👇 Add this block to ensure Node 20.x is used
+      # 👇 Ensure Node 20.x is used
       - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
@@ -32,6 +32,7 @@ jobs:
         working-directory: ./frontend
 
       - name: Build project
+        # This build step generates the output, including the 'standalone' folder
         run: npm run build
         working-directory: ./frontend
 
@@ -42,10 +43,13 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_VICTORIOUS_BEACH_025512D1E }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          app_location: "./frontend"
-          output_location: ".next"
-          skip_app_build: true
+          app_location: "./frontend" 
           
+          # 💡 CRITICAL FIX: Points to the 'standalone' directory, relative to app_location
+          app_artifact_location: ".next/standalone"
+          
+          # We remove the conflicting 'output_location' property
+          skip_app_build: true
         
 
   close_pull_request_job:
