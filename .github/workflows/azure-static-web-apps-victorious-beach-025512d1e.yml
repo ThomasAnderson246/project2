@@ -20,40 +20,52 @@ jobs:
           submodules: true
           lfs: false
 
-      # 👇 Ensure Node 20.x is used
+      # 👇 Step 1: Use Node 20 for both Next.js and Azure Functions
       - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: 20.10.0
           cache: 'npm'
 
-      - name: Install dependencies
+      # 👇 Step 2: NEXT.JS FRONTEND BUILD STEPS
+      - name: Install Frontend dependencies
         run: npm ci
         working-directory: ./frontend
 
-      - name: Build project
-        # This build step generates the output, including the 'standalone' folder
+      - name: Build Next.js project
+        # This requires 'output: standalone' in your next.config.ts
         run: npm run build
         working-directory: ./frontend
 
-      # 👇 Deploy only (no build in Azure)
+      # 👇 Step 3: AZURE FUNCTIONS BACKEND BUILD STEPS
+      - name: Install Backend dependencies
+        run: npm ci
+        working-directory: ./backend
+      
+      # NOTE: No explicit 'Build' step for the API is usually needed here, 
+      # as Oryx handles it, but running 'npm ci' ensures dependencies are present.
+
+      # 👇 Step 4: Deploy Everything
       - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_VICTORIOUS_BEACH_025512D1E }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          app_location: "./frontend" 
           
-          # 💡 CRITICAL FIX: Points to the 'standalone' directory, relative to app_location
+          # Next.js App Location (App)
+          app_location: "./frontend"
           app_artifact_location: ".next/standalone"
           
-          # We remove the conflicting 'output_location' property
+          # Azure Function Location (API)
+          api_location: "./backend"
+          
           skip_app_build: true
+        
+        # 💡 CRITICAL: We inject App Insights here to catch the server crash log
         env:
           APPLICATIONINSIGHTS_CONNECTION_STRING: ${{ secrets.APPLICATIONINSIGHTS_CONNECTION_STRING }}
-        
-
+          
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
