@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend } from "chart.js";
 import { Bar, Doughnut } from 'react-chartjs-2';
-import { useMemo } from "react";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend);
 
@@ -61,17 +60,19 @@ export default function Dashboard() {
     }
   }, []);
 
+  
+  useEffect(() => {
+    fetchData();
+    
+  }, [])
   const fetchData = async () => {
-    if (!apiUrl.trim()) {
-      setError('Please enter your Azure Function API URL');
-      return;
-    }
+    
 
     setLoading(true);
     setError(null);
 
     try {
-      const response = await fetch(apiUrl);
+      const response = await fetch(AZURE_FUNCTION_URL);
 
       if (!response.ok) {
         throw new Error (`HTTP error! Status: ${response.status}`);
@@ -216,60 +217,54 @@ const doughnutOptions = {
 const macrosChartData = getMacrosChartData();
 const distributionChartData = getDistributionChartData();
 const proteinChartData = getProteinChartData();
+const AZURE_FUNCTION_URL = "https://diet-analysis-func.azurewebsites.net/api/analyze";
 
 return (
-  <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 p-6">
+  <div className="min-h-screen bg-linear-to-br from-gray-900 via-slate-800 to-gray-900 p-6">
     <div className="max-w-7xl mx-auto">
       {/* Header */}
       <div className="text-center text-white mb-8">
-        <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-          Diet & Macro-Nutrient Analysis Dashboard
-        </h1>
-        <p className="text-lg text-gray-300">
-          Cloud-Powered Analytics with Azure Functions
-        </p>
-      </div>
+        
+        
 
-      {/* Controls */}
+      
       <div className="bg-gray-800 border border-gray-700 rounded-xl shadow-2xl p-6 mb-6">
         <div className="flex gap-4 items-end flex-wrap">
           <div className="flex-1 min-w-[300px]">
-            <label className="block text-sm font-semibold text-gray-300 mb-2">
-              Azure Function API URL:
-            </label>
-            <input
-              type="text"
-              value={apiUrl}
-              onChange={(e) => setApiUrl(e.target.value)}
-              placeholder="https://your-function-app.azurewebsites.net/api/analyze"
-              className="w-full px-4 py-2 bg-gray-700 border-2 border-gray-600 text-white placeholder-gray-400 rounded-lg focus:border-blue-500 focus:outline-none transition-colors"
-            />
+            <h1 className="text-4xl font-bold mb-2 bg-linear-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+              Diet & Macro-Nutrient Analysis Dashboard
+            </h1>
+            <p className="text-lg text-gray-300">
+              Cloud-Powered Analytics with Azure Functions
+            </p>
+          </div>
+
           </div>
           <button
             onClick={fetchData}
             disabled={loading}
-            className="px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 disabled:from-gray-600 disabled:to-gray-600 disabled:cursor-not-allowed transition-all shadow-lg"
+            className="px-6 py-2 bg-linear-to-r mt-2 from-blue-600 to-cyan-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 disabled:from-gray-600 disabled:to-gray-600 disabled:cursor-not-allowed transition-all shadow-lg"
           >
             {loading ? "Loading..." : "Refresh Data"}
           </button>
         </div>
       </div>
 
-      {/* Loading State */}
+      
       {loading && (
         <div className="text-center text-gray-300 text-xl py-10">
           Loading data from Azure Functions...
         </div>
       )}
 
-      {/* Error State */}
+      
       {error && (
         <div className="bg-red-900 border border-red-700 text-red-200 rounded-xl p-6 mb-6 text-center">
           {error}
         </div>
       )}
 
-      {/* Data Display */}
+      
       {data && !loading && (
         <>
           {/* Summary Cards */}
@@ -282,14 +277,14 @@ return (
                 <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
                   {item.label}
                 </h3>
-                <div className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+                <div className="text-3xl font-bold bg-linear-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
                   {item.value}
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Charts Grid */}
+          
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             {/* Macros Chart */}
             <div className="bg-gray-800 border border-gray-700 rounded-xl shadow-lg p-6">
@@ -303,7 +298,7 @@ return (
               </div>
             </div>
 
-            {/* Distribution Chart */}
+            
             <div className="bg-gray-800 border border-gray-700 rounded-xl shadow-lg p-6">
               <h2 className="text-xl font-bold text-white mb-4">
                 Diet Type Distribution
@@ -318,7 +313,7 @@ return (
               </div>
             </div>
 
-            {/* Protein Chart */}
+            
             <div className="bg-gray-800 border border-gray-700 rounded-xl shadow-lg p-6 lg:col-span-2">
               <h2 className="text-xl font-bold text-white mb-4">
                 Top 15 High-Protein Recipes
@@ -334,7 +329,7 @@ return (
             </div>
           </div>
 
-          {/* Metadata */}
+          
           <div className="bg-gray-800 border border-gray-700 rounded-xl shadow-lg p-6">
             <h2 className="text-xl font-bold text-white mb-4">
               Analysis Metadata
