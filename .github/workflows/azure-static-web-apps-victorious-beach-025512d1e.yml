@@ -43,7 +43,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
           app_location: "./frontend"
-          output_location: "out"
+          output_location: ".next"
           skip_app_build: true
           
         
