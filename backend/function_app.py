@@ -3,7 +3,7 @@ import pandas as pd
 import json
 import time
 import logging
-#from azure.storage.blob import BlobServiceClient
+from azure.storage.blob import BlobServiceClient
 import io
 import os
 
@@ -12,7 +12,7 @@ app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
 def get_blob_data():
     
-    """
+    
     try:
         connection_string = os.environ["AzureWebJobsStorage"]
         container_name = "diet-data"
@@ -30,8 +30,8 @@ def get_blob_data():
         logging.error(f"Error reading blob: {str(e)}")
         return None, str(e)
     
-    """
-    df = pd.read_csv("All_Diets.csv")
+    
+    #df = pd.read_csv("All_Diets.csv")
     return df, None
     
     
