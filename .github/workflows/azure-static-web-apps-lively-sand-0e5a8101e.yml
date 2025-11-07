@@ -20,23 +20,18 @@ jobs:
           submodules: true
           lfs: false
       
-      # ADD THIS STEP - Set Node.js version
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-      
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
+        env:
+          NODE_VERSION: '20'
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_LIVELY_SAND_0E5A8101E }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
           app_location: "/frontend"
           api_location: ""
-          output_location: "out"  # Changed from .next to out for static export
-          skip_app_build: false   # Let it build
+          output_location: "out"
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
