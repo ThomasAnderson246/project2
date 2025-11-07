@@ -218,23 +218,23 @@ const distributionChartData = getDistributionChartData();
 const proteinChartData = getProteinChartData();
 
 return (
-  <div className="min-h-screen bg-gradient-to-br from-purple-600 to-purple-900 p-6">
+  <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 p-6">
     <div className="max-w-7xl mx-auto">
       {/* Header */}
       <div className="text-center text-white mb-8">
-        <h1 className="text-4xl font-bold mb-2">
-          🍽️ Diet & Macro-Nutrient Analysis Dashboard
+        <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+          Diet & Macro-Nutrient Analysis Dashboard
         </h1>
-        <p className="text-lg opacity-90">
+        <p className="text-lg text-gray-300">
           Cloud-Powered Analytics with Azure Functions
         </p>
       </div>
 
       {/* Controls */}
-      <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+      <div className="bg-gray-800 border border-gray-700 rounded-xl shadow-2xl p-6 mb-6">
         <div className="flex gap-4 items-end flex-wrap">
           <div className="flex-1 min-w-[300px]">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-gray-300 mb-2">
               Azure Function API URL:
             </label>
             <input
@@ -242,29 +242,29 @@ return (
               value={apiUrl}
               onChange={(e) => setApiUrl(e.target.value)}
               placeholder="https://your-function-app.azurewebsites.net/api/analyze"
-              className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none"
+              className="w-full px-4 py-2 bg-gray-700 border-2 border-gray-600 text-white placeholder-gray-400 rounded-lg focus:border-blue-500 focus:outline-none transition-colors"
             />
           </div>
           <button
             onClick={fetchData}
             disabled={loading}
-            className="px-6 py-2 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all"
+            className="px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 disabled:from-gray-600 disabled:to-gray-600 disabled:cursor-not-allowed transition-all shadow-lg"
           >
-            {loading ? "⏳ Loading..." : "🔄 Refresh Data"}
+            {loading ? "Loading..." : "Refresh Data"}
           </button>
         </div>
       </div>
 
       {/* Loading State */}
       {loading && (
-        <div className="text-center text-white text-xl py-10">
+        <div className="text-center text-gray-300 text-xl py-10">
           Loading data from Azure Functions...
         </div>
       )}
 
       {/* Error State */}
       {error && (
-        <div className="bg-red-500 text-white rounded-xl p-6 mb-6 text-center">
+        <div className="bg-red-900 border border-red-700 text-red-200 rounded-xl p-6 mb-6 text-center">
           {error}
         </div>
       )}
@@ -277,12 +277,12 @@ return (
             {data.summary.map((item, index) => (
               <div
                 key={index}
-                className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow"
+                className="bg-gray-800 border border-gray-700 rounded-xl shadow-lg p-6 hover:shadow-2xl hover:border-blue-500 transition-all"
               >
-                <h3 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">
+                <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
                   {item.label}
                 </h3>
-                <div className="text-3xl font-bold text-purple-600">
+                <div className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
                   {item.value}
                 </div>
               </div>
@@ -292,9 +292,9 @@ return (
           {/* Charts Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             {/* Macros Chart */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h2 className="text-xl font-bold text-gray-800 mb-4">
-                📊 Average Macros by Diet Type
+            <div className="bg-gray-800 border border-gray-700 rounded-xl shadow-lg p-6">
+              <h2 className="text-xl font-bold text-white mb-4">
+                Average Macros by Diet Type
               </h2>
               <div className="h-80">
                 {macrosChartData && (
@@ -304,9 +304,9 @@ return (
             </div>
 
             {/* Distribution Chart */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h2 className="text-xl font-bold text-gray-800 mb-4">
-                📈 Diet Type Distribution
+            <div className="bg-gray-800 border border-gray-700 rounded-xl shadow-lg p-6">
+              <h2 className="text-xl font-bold text-white mb-4">
+                Diet Type Distribution
               </h2>
               <div className="h-80">
                 {distributionChartData && (
@@ -319,9 +319,9 @@ return (
             </div>
 
             {/* Protein Chart */}
-            <div className="bg-white rounded-xl shadow-lg p-6 lg:col-span-2">
-              <h2 className="text-xl font-bold text-gray-800 mb-4">
-                🏆 Top 15 High-Protein Recipes
+            <div className="bg-gray-800 border border-gray-700 rounded-xl shadow-lg p-6 lg:col-span-2">
+              <h2 className="text-xl font-bold text-white mb-4">
+                Top 15 High-Protein Recipes
               </h2>
               <div className="h-96">
                 {proteinChartData && (
@@ -335,36 +335,36 @@ return (
           </div>
 
           {/* Metadata */}
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">
-              📋 Analysis Metadata
+          <div className="bg-gray-800 border border-gray-700 rounded-xl shadow-lg p-6">
+            <h2 className="text-xl font-bold text-white mb-4">
+              Analysis Metadata
             </h2>
             <div className="space-y-3">
-              <div className="flex justify-between items-center py-2 border-b">
-                <span className="font-semibold text-gray-700">
+              <div className="flex justify-between items-center py-2 border-b border-gray-700">
+                <span className="font-semibold text-gray-300">
                   Highest Protein Diet:
                 </span>
-                <span className="text-purple-600 font-semibold">
+                <span className="text-blue-400 font-semibold">
                   {data.metadata.highestProteinDiet}
                 </span>
               </div>
-              <div className="flex justify-between items-center py-2 border-b">
-                <span className="font-semibold text-gray-700">
+              <div className="flex justify-between items-center py-2 border-b border-gray-700">
+                <span className="font-semibold text-gray-300">
                   Function Execution Time:
                 </span>
-                <span className="text-purple-600 font-semibold">
+                <span className="text-cyan-400 font-semibold">
                   {data.executionTimeMs} ms
                 </span>
               </div>
               <div className="py-2">
-                <span className="font-semibold text-gray-700 block mb-2">
+                <span className="font-semibold text-gray-300 block mb-2">
                   Most Common Cuisines by Diet:
                 </span>
                 <ul className="ml-4 space-y-1">
                   {Object.entries(data.metadata.commonCuisines).map(
                     ([diet, cuisine]) => (
-                      <li key={diet} className="text-gray-600">
-                        <strong>{diet}:</strong> {cuisine}
+                      <li key={diet} className="text-gray-400">
+                        <strong className="text-gray-300">{diet}:</strong> {cuisine}
                       </li>
                     )
                   )}
