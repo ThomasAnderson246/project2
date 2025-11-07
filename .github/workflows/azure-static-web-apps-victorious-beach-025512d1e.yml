@@ -50,6 +50,8 @@ jobs:
           
           # We remove the conflicting 'output_location' property
           skip_app_build: true
+        env:
+          APPLICATIONINSIGHTS_CONNECTION_STRING: ${{ secrets.APPLICATIONINSIGHTS_CONNECTION_STRING }}
         
 
   close_pull_request_job:
