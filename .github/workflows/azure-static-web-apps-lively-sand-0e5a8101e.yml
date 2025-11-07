@@ -1,4 +1,4 @@
-name: Azure Static Web Apps CI/CD
+name: Azure Static Web Apps CI/CD (Finalized)
 
 on:
   push:
@@ -19,27 +19,52 @@ jobs:
         with:
           submodules: true
           lfs: false
-      - name: Build And Deploy
-        id: builddeploy
+
+      # 1. Use Node 20 for the GitHub Actions environment
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.10.0
+          cache: 'npm'
+
+      # 2. NEXT.JS FRONTEND BUILD STEPS (Done BEFORE deployment)
+      - name: Install Frontend dependencies
+        run: npm ci
+        working-directory: ./frontend
+
+      - name: Build Next.js project
+        run: npm run build
+        working-directory: ./frontend
+
+      # 3. Deploy Everything
+      - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_LIVELY_SAND_0E5A8101E }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
-          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "/frontend" # App source code path
-          api_location: "" # Api source code path - optional
-          output_location: ".next" # Built app content directory - optional
-          ###### End of Repository/Build Configurations ######
-
+          
+          # 💡 CORRECTED PATHS & CONFIGURATION 
+          app_location: "/frontend"
+          app_artifact_location: ".next/standalone" # Next.js server output
+          api_location: "/backend"                 # Flask API folder
+          
+          # CRITICAL: Tell Oryx to use Python for the API
+          api_language: "python" 
+          
+          # Skip the build inside the deployment container since we built it above
+          skip_app_build: true
+        
+        # Inject App Insights for logging (best practice for debugging runtime errors)
+        env:
+          APPLICATIONINSIGHTS_CONNECTION_STRING: ${{ secrets.APPLICATIONINSIGHTS_CONNECTION_STRING }}
+          
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
     name: Close Pull Request Job
     steps:
       - name: Close Pull Request
-        id: closepullrequest
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_LIVELY_SAND_0E5A8101E }}
