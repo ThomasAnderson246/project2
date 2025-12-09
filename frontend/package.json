@@ -9,7 +9,9 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@react-oauth/google": "^0.12.2",
     "chart.js": "^4.5.1",
+    "jwt-decode": "^4.0.0",
     "next": "16.0.1",
     "react": "19.2.0",
     "react-chartjs-2": "^5.3.1",
