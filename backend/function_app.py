@@ -72,7 +72,7 @@ def perform_data_analysis(df):
     return dashboard_payload, full_recipes_list
 
 # --- Feature 1: Blob Trigger ---
-@app.blob_trigger(arg_name="myblob", path="diet-data/All_Diets.csv", connection="AzureWebJobsStorage")
+@app.blob_trigger(arg_name="myblob", path="diet-data/All_diets.csv", connection="AzureWebJobsStorage")
 def process_diet_csv(myblob: func.InputStream):
     # 使用 print 取代 logging
     logging.warning(f">>> [TRIGGER] Blob Detected: {myblob.name}")
