@@ -1,4 +1,5 @@
 azure-functions
-pandas
 azure-storage-blob
-openpyxl
+azure-data-tables
+pandas
+bcrypt
