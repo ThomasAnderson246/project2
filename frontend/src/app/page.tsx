@@ -66,7 +66,7 @@ export default function Dashboard() {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   // Config
-  const API_BASE = "http://localhost:7071/api";
+  const API_BASE = "https://diet-analysis-func.azurewebsites.net/api";
   const GOOGLE_CLIENT_ID = "323348568372-2u9mf2nbeinrm7b14pc3q7jk92biml7n.apps.googleusercontent.com";
 
   // Check LocalStorage on Load
