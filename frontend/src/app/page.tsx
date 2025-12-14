@@ -388,7 +388,35 @@ export default function Dashboard() {
               </div>
               <div className="bg-gray-800 border border-gray-700 p-6 rounded-xl shadow-lg lg:col-span-2 h-96">
                 <h3 className="text-lg font-bold mb-4 text-gray-200">Top High-Protein Recipes</h3>
-                <div className="h-full pb-6"><Bar data={getProteinChartData()!} options={{ indexAxis: 'y', maintainAspectRatio: false, responsive: true }} /></div>
+                <div className="h-full pb-6"><Bar data={getProteinChartData()!} options={{ 
+                  indexAxis: 'y', 
+                  maintainAspectRatio: false, 
+                  responsive: true,
+                  scales: {
+                    x: {
+                      ticks: {
+                        color: '#ffffff',
+                        font: { size: 13 }
+                      },
+                      grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    },
+                    y: {
+                      ticks: {
+                        color: '#ffffff',
+                        font: { size: 13 }
+                      },
+                      grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    }
+                  },
+                  plugins: {
+                    legend: {
+                      labels: {
+                        color: '#ffffff',
+                        font: { size: 13 }
+                      }
+                    }
+                  }
+                }} /></div>
               </div>
             </div>
           </>
